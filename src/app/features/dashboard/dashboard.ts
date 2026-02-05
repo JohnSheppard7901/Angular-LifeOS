@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -14,6 +15,17 @@ export class Dashboard {
   color: string = "color2";
 
   name: string = "";
+
+  counter = signal(0);
+  
+
+  increment(){
+    this.counter.set(this.counter() + 1);
+  }
+
+  decrease(){
+    this.counter.set(this.counter() - 1);
+  }
  
 
 }

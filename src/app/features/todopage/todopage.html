@@ -42,6 +42,28 @@
             <div class="list-group-item">
                 <div class="d-flex justify-content-between align-items-start">
                 <div class="form-check">
+                    
+                    <input 
+                        class="form-check-input" 
+                        type="checkbox"
+                        [checked]="todo1().done"
+                        (change)="toggleDone()">
+
+                    <label class="form-check-label fw-semibold" [class]="lineThrough">
+                    {{ ( todo1().title ) }}
+                    </label>
+                </div>
+
+                <button class="btn btn-sm btn-outline-secondary">
+                    Bearbeiten
+                </button>
+                </div>
+
+            </div>
+
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-start">
+                <div class="form-check">
                     <input class="form-check-input" type="checkbox" checked>
                     <label class="form-check-label fw-semibold text-decoration-line-through">
                     Bootstrap Layout bauen
