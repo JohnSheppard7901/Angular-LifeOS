@@ -1,3 +1,10 @@
+<!--
+    Todo:
+        abbrechen btn behält änderungen trotzdem bei, wahrscheinlich andere art von data binding notwendig
+        
+
+-->
+
 <div class="container-fluid mt-5">
   <div class="row">
 
@@ -11,75 +18,155 @@
         <!-- linker Hauptteil (größer) -->
         <div class="col-7 p-5 bg-light">
             <h2 class="mb-4">Meine Todos</h2>
+            <ul>
+                @for(todo of todos(); track todo.id){
+                    <li>{{ todo.id }}, {{ todo.title }}</li>
+                }
+            </ul>
+           
 
             <div class="list-group">
+                @for(todo of todos(); track todo.id){
+                    @if(editTodoById() !== todo.id){
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox">
+                            <label class="form-check-label fw-semibold">
+                                {{ todo.title }}
+                            </label>
+                        </div>
 
-            <div class="list-group-item">
-                <div class="d-flex justify-content-between align-items-start">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
-                    <label class="form-check-label fw-semibold">
-                    {{titel}}
-                    </label>
-                </div>
-                <!-- temporary for learning two-way binding -->
-                <input [(ngModel)]="titel">
+                        <button class="btn btn-sm btn-outline-secondary" (click)="startEdit(todo.id)">
+                            Bearbeiten
+                        </button>
+                        </div>
 
-                <button class="btn btn-sm btn-outline-secondary">
-                    Bearbeiten
-                </button>
-                </div>
+                        <small class="text-muted d-block ms-4 mt-1">
+                        {{ todo.description}}
+                        </small>
 
-                <small class="text-muted d-block ms-4 mt-1">
-                Erste Struktur und Routing aufsetzen
-                </small>
+                        <small class="text-muted ms-4">
+                         {{ todo.deadline}}  <!-- 📅 -->
+                        </small>
+                    </div>
+                } @else {
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="form-check flex-grow-1">
+                                <input class="form-check-input" type="checkbox">
 
-                <small class="text-muted ms-4">
-                📅 15.02.2026
-                </small>
-            </div>
+                                <input
+                                class="form-control form-control-sm fw-semibold ms-4 w-50"
+                                [(ngModel)]="todo.title"
+                                placeholder="Title"
+                                />
+                            </div>
 
-            <div class="list-group-item">
-                <div class="d-flex justify-content-between align-items-start">
-                <div class="form-check">
+                            <button
+                                class="btn btn-sm btn-outline-success ms-2"
+                            >
+                                Speichern
+                            </button>
+
+                            <button
+                                class="btn btn-sm btn-outline-danger ms-2"
+                                (click)="endEdit()"
+                            >
+                                Abbrechen
+                            </button>
+                        </div>
+
+                        <!-- Description -->
+                        <textarea
+                        class="form-control form-control-sm ms-5 mt-2 w-75"
+                        rows="2"
+                        placeholder="Description"
+                        [(ngModel)]="todo.description"
+                        ></textarea>
+
+                        <!-- Date -->
+                        <input
+                        type="date"
+                        class="form-control form-control-sm ms-5 mt-2 w-auto"
+                        [(ngModel)]="todo.deadline"
+                        />
+                    </div>
+            
+                }
+            }
+
+                
+
+              
+
+<!-- 
+                <div class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-start">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox">
+                        <label class="form-check-label fw-semibold">
+                        {{titel}}
+                        </label>
+                    </div>
                     
-                    <input 
-                        class="form-check-input" 
-                        type="checkbox"
-                        [checked]="todo1().done"
-                        (change)="toggleDone()">
+                    <input [(ngModel)]="titel">
 
-                    <label class="form-check-label fw-semibold" [class]="lineThrough">
-                    {{ ( todo1().title ) }}
-                    </label>
-                </div> 
+                    <button class="btn btn-sm btn-outline-secondary">
+                        Bearbeiten
+                    </button>
+                    </div>
 
-                <button class="btn btn-sm btn-outline-secondary">
-                    Bearbeiten
-                </button>
+                    <small class="text-muted d-block ms-4 mt-1">
+                    Erste Struktur und Routing aufsetzen
+                    </small>
+
+                    <small class="text-muted ms-4">
+                    📅 15.02.2026
+                    </small>
                 </div>
 
-            </div>
+                <div class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-start">
+                    <div class="form-check">
+                        
+                        <input 
+                            class="form-check-input" 
+                            type="checkbox"
+                            [checked]="todo1().done"
+                            (change)="toggleDone()">
 
-            <div class="list-group-item">
-                <div class="d-flex justify-content-between align-items-start">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" checked>
-                    <label class="form-check-label fw-semibold text-decoration-line-through">
-                    Bootstrap Layout bauen
-                    </label>
+                        <label class="form-check-label fw-semibold" [class]="lineThrough">
+                        {{ ( todo1().title ) }}
+                        </label>
+                    </div> 
+
+                    <button class="btn btn-sm btn-outline-secondary">
+                        Bearbeiten
+                    </button>
+                    </div>
+
                 </div>
 
-                <button class="btn btn-sm btn-outline-secondary">
-                    Bearbeiten
-                </button>
+                <div class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-start">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" checked>
+                        <label class="form-check-label fw-semibold text-decoration-line-through">
+                        Bootstrap Layout bauen
+                        </label>
+                    </div>
+
+                    <button class="btn btn-sm btn-outline-secondary">
+                        Bearbeiten
+                    </button>
+                    </div>
+
+                    <small class="text-muted d-block ms-4 mt-1">
+                    Grid, Sidebar und Abstände
+                    </small>
                 </div>
-
-                <small class="text-muted d-block ms-4 mt-1">
-                Grid, Sidebar und Abstände
-                </small>
-            </div>
-
+-->
             </div>
 
 

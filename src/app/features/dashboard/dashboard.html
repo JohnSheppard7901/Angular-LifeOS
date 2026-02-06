@@ -27,3 +27,15 @@
 <button (click)="increment()">Increment</button>
 <button (click)="decrease()">Decrease</button>
 
+<br>
+---------------------------------
+<br>
+
+<input type="checkbox" [(ngModel)]="isChecked">Check this box to see a suprise.
+
+
+{{isChecked}}
+
+@if(isChecked == true){
+    This is the suprise text.
+}

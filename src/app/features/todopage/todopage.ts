@@ -9,28 +9,44 @@ import { Todo } from './todopage.model';
   styleUrl: './todopage.css',
 })
 export class Todopage {
+  title = "Feed the cat";
+
+  todos = signal<Todo[]>([
+    {
+      id: 1,
+      title: "Buy food for Max",
+      done: false
+    },
+    {
+      id: 2,
+      title: "Lathar ausarbeiten",
+      description: "Latharas Character genau ausarbeiten",
+      done: false
+    },
+    { 
+      id: 3, 
+      title: 'Feed the cat', 
+      description: 'Morning feeding', 
+      done: false 
+    }
+  ]);
+
+
+  editTodoById = signal<number | null>(null);
+ 
+  startEdit(id: number){
+    this.editTodoById.set(id);
+  }
+
+  endEdit(){
+    this.editTodoById.set(null);
+  }
+
+
+
+
+  /*
   titel = "Feed the cat";
-
-
-  //String
-  firstName: Signal<string> = signal("John"); //with typecast
-  lastName = signal("Sheppard");              //without typecast
-
-  //int
-  roomNr = signal(409);
-
-  //boolean
-  done = signal(false);
-
-  //Array
-  cityList: Signal<Array<string>> = 
-    signal(["Atlantis", "Mexiko City", "Honkong"]);
-
-  //Object
-  person = signal({
-    name: "Frey",
-    age: 25
-  });
 
   todo1 = signal<Todo>({
     id: 1,
@@ -59,5 +75,5 @@ export class Todopage {
 
 
     console.log(this.todo1())
-  }
+  }*/
 }

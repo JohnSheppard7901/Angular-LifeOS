@@ -28,4 +28,5 @@ export class Dashboard {
   }
  
 
+  isChecked = false;
 }
