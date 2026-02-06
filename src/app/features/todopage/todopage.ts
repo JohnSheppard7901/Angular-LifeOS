@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, Signal, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Todo } from './todopage.model';
 
@@ -10,6 +10,27 @@ import { Todo } from './todopage.model';
 })
 export class Todopage {
   titel = "Feed the cat";
+
+
+  //String
+  firstName: Signal<string> = signal("John"); //with typecast
+  lastName = signal("Sheppard");              //without typecast
+
+  //int
+  roomNr = signal(409);
+
+  //boolean
+  done = signal(false);
+
+  //Array
+  cityList: Signal<Array<string>> = 
+    signal(["Atlantis", "Mexiko City", "Honkong"]);
+
+  //Object
+  person = signal({
+    name: "Frey",
+    age: 25
+  });
 
   todo1 = signal<Todo>({
     id: 1,
