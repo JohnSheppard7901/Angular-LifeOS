@@ -1,0 +1,71 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Katzenfutter nachkaufen",
+      "description": "Schau im Supermarkt nach Lieblingsfutter von Lucy.",
+      "deadline": "2026-02-10T00:00:00.000Z",
+      "done": false
+    },
+    {
+      "id": 2,
+      "title": "Geschichte schreiben: Kapitel 1",
+      "description": "Die Einleitung der neuen Fantasygeschichte fertigstellen.",
+      "deadline": "2026-02-08T00:00:00.000Z",
+      "done": false
+    },
+    {
+      "id": 3,
+      "title": "Wohnzimmer aufräumen",
+      "description": "Staub wischen, Boden saugen und Katzenhaare entfernen.",
+      "deadline": "2026-02-07T00:00:00.000Z",
+      "done": false
+    },
+    {
+      "id": 4,
+      "title": "Katzenklo reinigen",
+      "description": "Komplett saubermachen und neues Streu einfüllen.",
+      "deadline": "2026-02-06T00:00:00.000Z",
+      "done": true
+    },
+    {
+      "id": 5,
+      "title": "Geschichte schreiben: Kapitel 2",
+      "description": "Die Hauptfigur trifft auf ein geheimnisvolles Wesen.",
+      "deadline": "2026-02-12T00:00:00.000Z",
+      "done": false
+    },
+    {
+      "id": 6,
+      "title": "Wäsche waschen",
+      "description": "Alle Bettwäsche und Handtücher sortieren und waschen.",
+      "deadline": "2026-02-06T00:00:00.000Z",
+      "done": false
+    },
+    {
+      "id": 7,
+      "title": "Katzenstreicheleinheiten",
+      "description": "Mindestens 15 Minuten mit Minka und Simba spielen.",
+      "done": false
+    },
+    {
+      "id": 8,
+      "title": "Geschichte über Katzenabenteuer skizzieren",
+      "description": "Plotpunkte für eine Kurzgeschichte notieren.",
+      "done": false
+    },
+    {
+      "id": 9,
+      "title": "Küche putzen",
+      "description": "Arbeitsflächen abwischen, Müll entsorgen, Boden wischen.",
+      "done": true
+    },
+    {
+      "id": 10,
+      "title": "Geschichte Korrekturlesen",
+      "description": "Kapitel 1 und 2 auf Logikfehler und Rechtschreibung prüfen.",
+      "done": false
+    }
+
+  ]
+}
