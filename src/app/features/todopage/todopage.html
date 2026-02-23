@@ -19,20 +19,35 @@
         <div class="col-7 p-5 bg-light">
             <h2 class="mb-4">Meine Todos</h2>
             <ul>
+                <!-- 
                 @for(todo of todos(); track todo.id){
                     <li>{{ todo.id }}, {{ todo.title }}</li>
                 }
+
+                <div *ngFor="let todo of todos; trackBy: trackById">
+             <li>{{ todo.id }}, {{ todo.title }}</li>
+            </div>-->
             </ul>
+
+            
            
 
             <div class="list-group">
-                @for(todo of todos(); track todo.id){
-                    @if(editTodoById() !== todo.id){
-                    <div class="list-group-item">
-                        <div class="d-flex justify-content-between align-items-start">
+
+               @for(todo of todos; track todo.id){
+    
+            @if(editingTodoId !== todo.id) {
+                <!-- DISPLAY MODE -->
+                <div class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-start">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox">
-                            <label class="form-check-label fw-semibold">
+                            <input 
+                                class="form-check-input" 
+                                type="checkbox" 
+                                [checked]="todo.done">
+
+                            <label class="form-check-label fw-semibold"
+                                [ngClass]="todo.done == true ? 'text-decoration-line-through' : ''">
                                 {{ todo.title }}
                             </label>
                         </div>
@@ -40,61 +55,61 @@
                         <button class="btn btn-sm btn-outline-secondary" (click)="startEdit(todo.id)">
                             Bearbeiten
                         </button>
-                        </div>
-
-                        <small class="text-muted d-block ms-4 mt-1">
-                        {{ todo.description}}
-                        </small>
-
-                        <small class="text-muted ms-4">
-                         {{ todo.deadline}}  <!-- 📅 -->
-                        </small>
                     </div>
-                } @else {
-                    <div class="list-group-item">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div class="form-check flex-grow-1">
-                                <input class="form-check-input" type="checkbox">
 
-                                <input
+                    <small class="text-muted d-block ms-4 mt-1">
+                        {{ todo.description}}
+                    </small>
+
+                    <small class="text-muted ms-4">
+                        {{ todo.deadline}}
+                    </small>
+                </div>
+            }
+            
+            @if(editingTodoId === todo.id) {
+                <!-- EDIT MODE -->
+                <div class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="form-check flex-grow-1">
+                            <input class="form-check-input" type="checkbox" [(ngModel)]="todo.done">
+
+                            <input
                                 class="form-control form-control-sm fw-semibold ms-4 w-50"
                                 [(ngModel)]="todo.title"
-                                placeholder="Title"
-                                />
-                            </div>
-
-                            <button
-                                class="btn btn-sm btn-outline-success ms-2"
-                            >
-                                Speichern
-                            </button>
-
-                            <button
-                                class="btn btn-sm btn-outline-danger ms-2"
-                                (click)="endEdit()"
-                            >
-                                Abbrechen
-                            </button>
+                            />
                         </div>
 
-                        <!-- Description -->
-                        <textarea
+                        <button
+                            class="btn btn-sm btn-outline-success ms-2"
+                            
+                        >
+                            Speichern
+                        </button>
+
+                        <button
+                            class="btn btn-sm btn-outline-danger ms-2"
+                            (click)="cancelEdit()"
+                        >
+                            Abbrechen
+                        </button>
+                    </div>
+
+                    <textarea
                         class="form-control form-control-sm ms-5 mt-2 w-75"
                         rows="2"
                         placeholder="Description"
                         [(ngModel)]="todo.description"
-                        ></textarea>
+                    ></textarea>
 
-                        <!-- Date -->
-                        <input
+                    <input
                         type="date"
                         class="form-control form-control-sm ms-5 mt-2 w-auto"
                         [(ngModel)]="todo.deadline"
-                        />
-                    </div>
-            
-                }
+                    />
+                </div>
             }
+}
 
                 
 
@@ -177,15 +192,15 @@
           <div class="border rounded p-4 bg-white shadow-sm">
             <h3 class="mb-4">Neues Todo</h3>
 
-            <form>
+            <form [formGroup] = "todoForm" (ngSubmit)="this.create()">
                 <div class="mb-3">
                 <label class="form-label">Titel</label>
-                <input type="text" class="form-control" placeholder="z. B. Angular lernen">
+                <input type="text" class="form-control" formControlName="title" placeholder="z. B. Angular lernen">
                 </div>
 
                 <div class="mb-3">
                 <label class="form-label">Beschreibung</label>
-                <textarea class="form-control" rows="2" placeholder="Optional"></textarea>
+                <textarea class="form-control" rows="2" formControlName="description" placeholder="Optional"></textarea>
                 </div>
 
                 <div class="form-check mb-3">
@@ -196,7 +211,7 @@
                 </div>
 
                 <div class="mb-4">
-                <input type="date" class="form-control">
+                <input type="date" class="form-control" formControlName="deadline" >
                 </div>
 
                 <div class="form-check mb-4">
