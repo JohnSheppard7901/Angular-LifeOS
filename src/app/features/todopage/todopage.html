@@ -18,170 +18,91 @@
         <!-- linker Hauptteil (größer) -->
         <div class="col-7 p-5 bg-light">
             <h2 class="mb-4">Meine Todos</h2>
-            <ul>
-                <!-- 
-                @for(todo of todos(); track todo.id){
-                    <li>{{ todo.id }}, {{ todo.title }}</li>
-                }
-
-                <div *ngFor="let todo of todos; trackBy: trackById">
-             <li>{{ todo.id }}, {{ todo.title }}</li>
-            </div>-->
-            </ul>
-
             
            
 
             <div class="list-group">
 
-               @for(todo of todos; track todo.id){
+            @for(todo of todos(); track todo.id){
     
-            @if(editingTodoId !== todo.id) {
-                <!-- DISPLAY MODE -->
-                <div class="list-group-item">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div class="form-check">
-                            <input 
-                                class="form-check-input" 
-                                type="checkbox" 
-                                [checked]="todo.done">
+                @if(editingTodoId !== todo.id) {
+                    <!-- DISPLAY MODE -->
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="form-check">
+                                <input 
+                                    class="form-check-input" 
+                                    type="checkbox" 
+                                    [checked]="todo.done">
 
-                            <label class="form-check-label fw-semibold"
-                                [ngClass]="todo.done == true ? 'text-decoration-line-through' : ''">
-                                {{ todo.title }}
-                            </label>
+                                <label class="form-check-label fw-semibold"
+                                    [ngClass]="todo.done == true ? 'text-decoration-line-through' : ''">
+                                    {{ todo.title }}
+                                </label>
+                            </div>
+
+                            <button class="btn btn-sm btn-outline-secondary" (click)="startEdit(todo.id)">
+                                Bearbeiten
+                            </button>
                         </div>
 
-                        <button class="btn btn-sm btn-outline-secondary" (click)="startEdit(todo.id)">
-                            Bearbeiten
-                        </button>
+                        <small class="text-muted d-block ms-4 mt-1">
+                            {{ todo.description}}
+                        </small>
+
+                        <small class="text-muted ms-4">
+                            {{ todo.deadline}}
+                        </small>
                     </div>
+                }
+                
+                @if(editingTodoId === todo.id) {
+                    <!-- EDIT MODE -->
+                     <form [formGroup]="tempTodo">
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="form-check flex-grow-1">
+                                <input class="form-check-input" type="checkbox" formControlName="done">
 
-                    <small class="text-muted d-block ms-4 mt-1">
-                        {{ todo.description}}
-                    </small>
+                                <input
+                                    class="form-control form-control-sm fw-semibold ms-4 w-50"
+                                    formControlName="title"
+                                />
+                            </div>
 
-                    <small class="text-muted ms-4">
-                        {{ todo.deadline}}
-                    </small>
-                </div>
-            }
-            
-            @if(editingTodoId === todo.id) {
-                <!-- EDIT MODE -->
-                <div class="list-group-item">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div class="form-check flex-grow-1">
-                            <input class="form-check-input" type="checkbox" [(ngModel)]="todo.done">
+                            <button
+                                class="btn btn-sm btn-outline-success ms-2"
+                                (click)="saveEdit()"
+                            >
+                                Speichern
+                            </button>
 
-                            <input
-                                class="form-control form-control-sm fw-semibold ms-4 w-50"
-                                [(ngModel)]="todo.title"
-                            />
+                            <button
+                                class="btn btn-sm btn-outline-danger ms-2"
+                                (click)="cancelEdit()"
+                            >
+                                Abbrechen
+                            </button>
                         </div>
 
-                        <button
-                            class="btn btn-sm btn-outline-success ms-2"
-                            
-                        >
-                            Speichern
-                        </button>
+                        <textarea
+                            class="form-control form-control-sm ms-5 mt-2 w-75"
+                            rows="2"
+                            placeholder="Description"
+                            formControlName="description"
+                        ></textarea>
 
-                        <button
-                            class="btn btn-sm btn-outline-danger ms-2"
-                            (click)="cancelEdit()"
-                        >
-                            Abbrechen
-                        </button>
+                        <input
+                            type="date"
+                            class="form-control form-control-sm ms-5 mt-2 w-auto"
+                            formControlName="deadline"
+                        />
                     </div>
-
-                    <textarea
-                        class="form-control form-control-sm ms-5 mt-2 w-75"
-                        rows="2"
-                        placeholder="Description"
-                        [(ngModel)]="todo.description"
-                    ></textarea>
-
-                    <input
-                        type="date"
-                        class="form-control form-control-sm ms-5 mt-2 w-auto"
-                        [(ngModel)]="todo.deadline"
-                    />
-                </div>
-            }
+                    </form>
+                }
 }
 
-                
-
-              
-
-<!-- 
-                <div class="list-group-item">
-                    <div class="d-flex justify-content-between align-items-start">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox">
-                        <label class="form-check-label fw-semibold">
-                        {{titel}}
-                        </label>
-                    </div>
-                    
-                    <input [(ngModel)]="titel">
-
-                    <button class="btn btn-sm btn-outline-secondary">
-                        Bearbeiten
-                    </button>
-                    </div>
-
-                    <small class="text-muted d-block ms-4 mt-1">
-                    Erste Struktur und Routing aufsetzen
-                    </small>
-
-                    <small class="text-muted ms-4">
-                    📅 15.02.2026
-                    </small>
-                </div>
-
-                <div class="list-group-item">
-                    <div class="d-flex justify-content-between align-items-start">
-                    <div class="form-check">
-                        
-                        <input 
-                            class="form-check-input" 
-                            type="checkbox"
-                            [checked]="todo1().done"
-                            (change)="toggleDone()">
-
-                        <label class="form-check-label fw-semibold" [class]="lineThrough">
-                        {{ ( todo1().title ) }}
-                        </label>
-                    </div> 
-
-                    <button class="btn btn-sm btn-outline-secondary">
-                        Bearbeiten
-                    </button>
-                    </div>
-
-                </div>
-
-                <div class="list-group-item">
-                    <div class="d-flex justify-content-between align-items-start">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" checked>
-                        <label class="form-check-label fw-semibold text-decoration-line-through">
-                        Bootstrap Layout bauen
-                        </label>
-                    </div>
-
-                    <button class="btn btn-sm btn-outline-secondary">
-                        Bearbeiten
-                    </button>
-                    </div>
-
-                    <small class="text-muted d-block ms-4 mt-1">
-                    Grid, Sidebar und Abstände
-                    </small>
-                </div>
--->
+            
             </div>
 
 

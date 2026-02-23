@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { TodoResponse } from "../models/todo-response.model";
 import { TodoCreateDto } from "../models/todo-create.model";
 import { PageResponse } from "../models/PageResponse";
+import { TodoUpdateDto } from "../models/todo-update";
 
 @Injectable({
     providedIn: 'root'
@@ -29,6 +30,10 @@ export class TodoService {
 
     create(todo: TodoCreateDto): Observable<TodoResponse>{
         return this.http.post<TodoResponse>(`${this.apiUrl}/${this.tempUserId}`, todo);
+    }
+
+    update(id: string, todo: TodoUpdateDto): Observable<TodoResponse>{
+        return this.http.patch<TodoResponse>(`${this.apiUrl}/${id}`, todo);
     }
 
 }

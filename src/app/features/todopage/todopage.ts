@@ -14,21 +14,30 @@ import { TodoCreateDto } from '../../models/todo-create.model';
 })
 export class Todopage implements OnInit{
   private todoService = inject(TodoService);
-  todos: TodoResponse[] = [];
+  todos = signal<TodoResponse[]>([]);
   editingTodoId: string | null = null;
 
+  tempTodo: FormGroup;
   todoForm: FormGroup;
+
   constructor(private fb: FormBuilder){
-     this.todoForm = this.fb.group({
+    this.todoForm = this.fb.group({
       title: [''],
       description: [''],
       deadline: ['']
+    });
+
+    this.tempTodo = this.fb.group({
+      title: [''],
+      description: [''],
+      deadline: [''],
+      done: [false]
     });
   }
 
   ngOnInit(): void {
     this.todoService.getAll().subscribe(data => {
-      this.todos = data.content;
+      this.todos.set(data.content);
       console.log(data.content);
     })
   }
@@ -40,6 +49,17 @@ export class Todopage implements OnInit{
         console.log("Created Object: ")
         console.log(data)
     });
+
+    this.todos.update(todos => [...todos, {
+      id: "temp-id",
+      title: dto.title,
+      description: dto.description || null,
+      deadline: dto.deadline || "",
+      done: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      userId: "temp-user-id"
+    }])
   }
 
   trackById(index: number, item: TodoResponse) {
@@ -51,109 +71,56 @@ export class Todopage implements OnInit{
 
   startEdit(id: string) {
     this.editingTodoId = id;
+
+      const todo = this.todos().find(t => t.id === id);
+      if (todo) {
+        this.tempTodo.setValue({
+          title: todo.title,
+          description: todo.description || '',
+          deadline: todo.deadline,
+          done: todo.done
+        });
+      }
   }
 
   cancelEdit() {
     this.editingTodoId = null;
   }
 
+  saveEdit() {
+    if (!this.editingTodoId) return;
 
+    const updatedTodo: TodoResponse = {
+      id: this.editingTodoId,
+      title: this.tempTodo.value.title,
+      description: this.tempTodo.value.description,
+      deadline: this.tempTodo.value.deadline,
+      done: this.tempTodo.value.done,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      userId: "temp-user-id"
+    };
 
+    this.todoService.update(this.editingTodoId, this.tempTodo.value).subscribe( {
 
+      next: (data) => {
+        // nur hier UI aktualisieren, wenn Update erfolgreich war
+        this.todos.update(todos => 
+          todos.map(todo => 
+            todo.id === this.editingTodoId ? data : todo
+          )
+        );
+        this.editingTodoId = null;
+        console.log("Updated Object: ")
+        console.log(data)
 
+      },
+      error: (err) => {
+        console.error("Update failed:", err);
+        // ggf. UI informieren, dass Update fehlgeschlagen ist
+      }
+      
+    });
 
-
-
-  /*
-  tempTodo = signal<Todo>(
-    {
-      title: "",
-      description: "",
-      done: false
-    }
-  )
-
-  todos = signal<Todo[]>([
-    {
-      id: 1,
-      title: "Buy food for Max",
-      done: false
-    },
-    {
-      id: 2,
-      title: "Lathar ausarbeiten",
-      description: "Latharas Character genau ausarbeiten",
-      done: false
-    },
-    { 
-      id: 3, 
-      title: 'Feed the cat', 
-      description: 'Morning feeding', 
-      done: false 
-    }
-  ]);
-
-
-  editTodoById = signal<number | null>(null);
- 
-  startEdit(id: number){
-    this.editTodoById.set(id);
   }
-
-  endEdit(){
-    this.editTodoById.set(null);
-  }
-
-  toggleDone(id: number){
-    this.todos.update(todos => 
-      todos.map(todo => 
-        todo.id === id ? {...todo, done: !todo.done} : todo
-      )
-    )
-
-    console.log(
-    this.todos().find(t => t.id === id)
-    );
-  }
-
-  toggleDone(id: number){
-
-    console.log('clicked', id);
-    console.log('todos signal:', this.todos());
-
-    let todo: Todo|undefined = this.todos().find(todo => todo.id === id);
-    todo?.done = !todo?.done;
-    console.log(todo);
-  }
-
-  titel = "Feed the cat";
-
-  todo1 = signal<Todo>({
-    id: 1,
-    title: "Buy food for Max",
-    done: false
-  });
-  lineThrough: string = "";
-
-  toggleDone(){
-    if(this.todo1().done === true){
-      this.lineThrough = "";
-
-      this.todo1.update(todo => ({
-        ...todo,
-        done: false
-      }));
-    }else{
-      this.lineThrough = "text-decoration-line-through";
-       this.todo1.update(todo => ({
-        ...todo,
-        done: true
-      }));
-    }
-
-    
-
-
-    console.log(this.todo1())
-  }*/
 }
